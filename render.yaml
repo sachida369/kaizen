@@ -1,0 +1,48 @@
+services:
+  - type: web
+    name: kaizen-recruitment
+    runtime: node
+    plan: standard
+    buildCommand: npm ci && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+    # Database connection - configure in Render dashboard
+    # Add DATABASE_URL from your Render PostgreSQL instance
+    # Add all other environment variables from .env.example
+
+databases:
+  - name: kaizen-db
+    databaseName: kaizen_recruitment
+    plan: standard
+    version: 15
+    ipAllowList: []
+    # This creates a PostgreSQL 15 database that auto-backs up daily
+    # You'll need to manually create the tables after deployment using:
+    # npm run db:push
+
+# For quick deployment:
+# 1. Push to GitHub: git push origin main
+# 2. Connect your GitHub repo to Render
+# 3. Set environment variables in Render dashboard
+# 4. Render will automatically:
+#    - Install dependencies
+#    - Run npm run build
+#    - Start with npm start
+# 5. After deployment succeeds, run the migration:
+#    - Open Render shell or use CLI to run: npm run db:push
+
+# Typical deployment flow:
+# 1. Create a new Web Service on Render
+# 2. Connect your GitHub repository
+# 3. Set BUILD COMMAND: npm run build
+# 4. Set START COMMAND: npm start
+# 5. Add a PostgreSQL 15 database from Render dashboard
+# 6. Copy DATABASE_URL from Render to web service environment variables
+# 7. Add all API keys from .env.example as environment variables
+# 8. Deploy
+# 9. After deployment, run migrations in Render shell:
+#    docker exec <container> npm run db:push
